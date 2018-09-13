@@ -33,14 +33,6 @@ class BaseController extends Controller
         }else{
             abort(404);
         }
-//        var_dump($p);
-//        var_dump($c);
-//        if($p){
-//        }else{
-//
-//        }
-
-
     }
     function review(){
 
