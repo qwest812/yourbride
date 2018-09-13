@@ -1,63 +1,18 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Document</title>
-    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
-    <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.7/summernote.css" rel="stylesheet">
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
-    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.7/summernote.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#content').summernote({
-                callbacks: {
-                    onImageUpload: function(files) {
-                        var el = $(this);
-                        sendFile(files[0],el);
-                    }
-                }
-            });
-        });
+@include('bright/admin/header')
 
-        function sendFile(file, el) {
-            var  data = new FormData();
-            data.append("file", file);
-            var url = 'upload';
-            $.ajax({
-                data: data,
-                type: "POST",
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                url: url,
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function(url2) {
-                    console.log(url2);
-                    el.summernote('insertImage', url2);
-                }
-            });
-        }
-
-    </script>
-</head>
-<body>
-{{ Form::open(array('url' => 'add-bright-sites', 'files' => true)) }}
-
-
+@include('bright.admin.navbar')
+<h1>@yield('h1')</h1>
+@yield('form-open')
 <div class="form-group ">
-    {!! Form::label('h1', 'H1:') !!}
+    {!! Form::label('h1', 'H1(name):') !!}
     {!! Form::text('h1') !!}
 </div>
+@yield('additional')
 <div class="form-group ">
     {!! Form::label('title', 'Title:') !!}
     {!! Form::text('title') !!}
 </div>
-</div><div class="form-group ">
+<div class="form-group ">
     {!! Form::label('og_description', 'OG_Description:') !!}
     {!! Form::text('og_description') !!}
 </div>
@@ -106,16 +61,49 @@
 </div>
 <div class="form-group">
     {!! Form::label('content', 'Content') !!}
-    {!! Form::textarea('content', null, ['id'=>'content']); !!}
+        {!! Form::textarea('content', null, ['id'=>'content']); !!}
 </div>
-<div class="form-group">
 
-    {!! Form::submit('Click Me!'); !!}
+<div class="form-group">
+    {{--{!! Form::submit('Click Me!',['name'=>'add-page']); !!}--}}
+    {!! Form::submit('Save!',['id'=>'save']) !!}
+
 </div>
 
 {{ Form::close() }}
-</body>
-</html>
 
 
 
+@include('bright/admin/footer')
+<script>
+    $(document).ready(function() {
+        $('#content').summernote({
+            callbacks: {
+                onImageUpload: function(files) {
+                    var el = $(this);
+                    sendFile(files[0],el);
+                }
+            }
+        });
+    });
+
+    function sendFile(file, el) {
+        var  data = new FormData();
+        data.append("file", file);
+        var url = 'upload';
+        $.ajax({
+            data: data,
+            type: "POST",
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: url,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(url2) {
+                console.log(url2);
+                el.summernote('insertImage', url2);
+            }
+        });
+    }
+
+</script>
