@@ -23,10 +23,13 @@
 Route::get('admin/add-page', 'AdminController@addPageSites');
 Route::get( 'admin/pages', 'AdminController@pages');
 Route::get( 'admin/edit/page/{id}', 'AdminController@editPage');
+Route::get('admin/delete/page/{id}', 'AdminController@deletePage');
 /// categories
 Route::get( 'admin/add-category', 'AdminController@addCategorySites');
 Route::get( 'admin/categories', 'AdminController@categories');
+Route::get( 'admin/edit/category/{id}', 'AdminController@editCategory');
 Route::get( 'admin/form-test', 'AdminController@formTest');
+Route::get('admin/delete/category/{id}', 'AdminController@deleteCategory');
 //--------------------------------------
 /////////post
 /// page
@@ -37,6 +40,7 @@ Route::get( 'admin/form-test', 'AdminController@formTest');
  ///category
 Route::post( 'admin/save-category', 'AdminController@saveCategory');
 Route::post('admin/store-bright', 'AdminController@storeBright');
+Route::post( 'admin/update-category/{id}', 'AdminController@updateCategory');
 
 
 Route::get('admin/upload','AdminController@upload')->name('upload');

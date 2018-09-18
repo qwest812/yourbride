@@ -1,6 +1,6 @@
 @extends('add-template')
 @section('h1')
-    Add Page
+    Add New Page
 @endsection
 @section('form-open')
     {{ Form::open(array('url' => '/admin/save-page', 'files' => true)) }}

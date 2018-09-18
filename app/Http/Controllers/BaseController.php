@@ -20,15 +20,24 @@ class BaseController extends Controller
         $array =explode('/',$url);
         $pieceUrl=$array[3];
         $page=Page::where('local_url', $pieceUrl)->get()->toArray();
-        $category=Category::where('local_url', $pieceUrl)->get()->toArray();
-        if($category){
+        $category=Category::where('local_url', $pieceUrl)->get();
+//        echo '<pre>';
+//        var_dump($category);
+//        echo '</pre>';
+        if(!empty($category->toArray())){
             $category=$category[0];
-            return view('bright.category', compact('category'));
+
+
+
+            $pagesThisCategory=$category->pages->toArray();
+            $category=$category->toArray();
+//            echo '<pre>';
+//            var_dump($pagesThisCategory->toArray());
+//            echo '</pre>';
+            $countPages=count($pagesThisCategory);
+            return view('bright.category', compact('category','pagesThisCategory', 'countPages'));
         }elseif($page){
             $page=$page[0];
-//            echo '<pre>';
-//            var_dump($page);
-//            echo '</pre>';
             return view('bright.review', compact('page'));
         }else{
             abort(404);

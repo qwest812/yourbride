@@ -32,6 +32,10 @@ class AdminController extends Controller
 
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     function editPage($id)
     {
         $page = Page::find($id);
@@ -46,11 +50,20 @@ class AdminController extends Controller
                 if ($category['id'] == $mycat['id']) {
                     $categories[$key]['check'] = true;
                 }
-
             }
         }
-        $page['category_id']=$categories;
+        $page['category_id'] = $categories;
         return view('bright.admin.edit-page', compact('page', 'categories'));
+    }
+
+    function editCategory($id)
+    {
+        $category = Category::find($id);
+//        $category=$category->toArray();
+//        echo '<pre>';
+//        var_dump($category->toArray());
+//        echo '</pre>';
+        return view('bright.admin.edit-category', compact('category'));
     }
 
     /**
@@ -76,39 +89,78 @@ class AdminController extends Controller
         }
         return redirect('admin/pages');
     }
-function updatePage(Request $request, $id){
-    $page= Page::find($id);
-    $input=$request->toArray();
-    if(!isset($input['image'])){
-        $input['image']=$page['image'];
-    }else{
-        $file = $request->file('image');
-        $path=$this->saveImg($file);
-        $input['image']=$path;
-    }
-    if(isset($input['category_id'])){
-        $category_id=$input['category_id'];
-        unset($input['category_id']);
-        $categoryThisPage= $page->categories;
-        $this->detachCategory($page,$categoryThisPage->toArray());
+
+    function updatePage(Request $request, $id)
+    {
+        $page = Page::find($id);
+        $input = $request->toArray();
+        if (!isset($input['image'])) {
+            $input['image'] = $page['image'];
+        } else {
+            $file = $request->file('image');
+            $path = $this->saveImg($file);
+            $input['image'] = $path;
+        }
+        if (isset($input['category_id'])) {
+            $category_id = $input['category_id'];
+            unset($input['category_id']);
+            $categoryThisPage = $page->categories;
+            $this->detachCategory($page, $categoryThisPage->toArray());
             $this->createRelationshipPageToCategory($page, $category_id);
-    }
+        }
         $page->update($input);
-    return redirect('/admin/edit/page/'.$id);
-}
+        return redirect('/admin/edit/page/' . $id);
+    }
 
+    /**
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    function updateCategory(Request $request, $id)
+    {
+        $category = Category::find($id);
+        $input = $request->toArray();
+        $category->update($input);
+        return redirect('/admin/edit/category/' . $id);
 
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     function saveCategory(Request $request)
     {
         $input = $request->all();
-        echo '<pre>';
-        echo '</pre>';
         $category = Category::create($input);
         if ($category->id) {
             return redirect('admin/categories');
-        } else {
-            abort(404);
         }
+        return 'Error';
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    function deleteCategory($id)
+    {
+        $category = Category::find($id);
+        if($category){
+
+            $detach = $category->pages()->detach();
+            $category->delete();
+        }
+        return redirect('admin/categories');
+    }
+    function  deletePage($id){
+        $page=Page::find($id);
+        if($page){
+            $detach =$page->categories()->detach();
+            $page->delete();
+        }
+        return redirect('admin/pages');
     }
 
     /**
@@ -121,6 +173,7 @@ function updatePage(Request $request, $id){
         $allCategories = $allCategories->toArray();
         return view('bright.admin.categories', compact('allCategories'));
     }
+
 
     /**
      * Show all pages
@@ -194,14 +247,15 @@ function updatePage(Request $request, $id){
      * @param array $categories
      * @return int
      */
-    protected function detachCategory(Page $page, array $categories){
-        $id=[];
-        foreach ($categories as $category){
-            $id[]=$category['id'];
+    protected function detachCategory(Page $page, array $categories)
+    {
+        $id = [];
+        foreach ($categories as $category) {
+            $id[] = $category['id'];
         }
         return $page->categories()->detach($id);
 
 
-}
+    }
 
 }

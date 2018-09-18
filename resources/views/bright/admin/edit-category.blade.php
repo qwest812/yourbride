@@ -1,9 +1,9 @@
 @section('h1')
-    Add New Category
-    @endsection
+    Edit Category
+@endsection
 @section('form-open')
-    {{ Form::open(array('url' => 'admin/save-category', 'files' => true)) }}
-    @endsection
+    {!! Form::model($category, ['method' => 'POST', 'url' => 'admin/update-category/' . $category->id,'files' => true]) !!}
+@endsection
 
 @include('bright/admin/header')
 

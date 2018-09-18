@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en-US">
 <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# website: http://ogp.me/ns/website#">
@@ -108,7 +107,7 @@
     </script>
 </head>
 <body>
-
+asdas
 <nav class="header fixed">
 
     <div>
@@ -179,7 +178,7 @@
             <div class="cell_title" id="single_article_title"><h1 style="font-size: 28px;"><strong>{{ $page['h1'] }}</strong></h1>
             </div>
             <div class="latest">Latest update: 2018-08-13</div>
-            <div class="cell_content"><p>LoveSwans is a top-notch, personalized, international dating site that provides its members with a safe and secure environment to communicate with each other. LoveSwans assists those interested in Russian&nbsp;and Ukrainian segment of the online relations industry. You are equipped with diverse instruments for interaction – instant live chats, camera-based calls, letters, etc.&nbsp;</p></div>
+            <div class="cell_content"><p>{{$page['short_content']}}</p></div>
             <div class="rates">
                 <div class="green_number">{{ $page['reply_rate'] }}%
                     <div class="number_text"> Girl's reply rate</div>

@@ -22,7 +22,6 @@ class CreateCategoriesTable extends Migration
             $table->text('og_description')->nullable();
             $table->text('description')->nullable();
             $table->string('keywords')->nullable();
-            $table->string('visit_site')->nullable();
             $table->string('local_url');
             $table->text('content')->nullable();
             $table->timestamps();

@@ -1,0 +1,23 @@
+.button_link a{
+    display: block;
+    width: 115px;
+    height: 25px;
+    background: #4E9CAF;
+    text-align: center;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+}
+.button_link div {
+    margin: 5px  0 0 50px;
+}
+.button_link{
+    padding-bottom: 5px;
+        border-bottom: 1px solid black;
+}
+.list:nth-child(2n){
+    background-color: lightgrey;
+}
+.list:nth-child(2n+1){
+    background-color: darkgrey;
+}
